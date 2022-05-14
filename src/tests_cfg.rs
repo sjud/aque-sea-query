@@ -12,7 +12,7 @@ use crate::Iden;
 /// A `Enum` implemented [`Iden`] used in rustdoc and test to demonstrate the library usage.
 ///
 /// [`Iden`]: crate::types::Iden
-#[derive(Debug)]
+#[derive(Debug,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Character {
     Table,
     Id,
@@ -26,7 +26,7 @@ pub enum Character {
 
 /// A shorthand for [`Character`]
 pub type Char = Character;
-
+#[typetag::serde]
 impl Iden for Character {
     fn unquoted(&self, s: &mut dyn FmtWrite) {
         write!(
@@ -52,7 +52,7 @@ impl Iden for Character {
 /// A `Enum` implemented [`Iden`] used in rustdoc and test to demonstrate the library usage.
 ///
 /// [`Iden`]: crate::types::Iden
-#[derive(Debug)]
+#[derive(Debug,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Font {
     Table,
     Id,
@@ -60,7 +60,7 @@ pub enum Font {
     Variant,
     Language,
 }
-
+#[typetag::serde]
 impl Iden for Font {
     fn unquoted(&self, s: &mut dyn FmtWrite) {
         write!(
@@ -83,7 +83,7 @@ impl Iden for Font {
 /// A `Enum` implemented [`Iden`] used in rustdoc and test to demonstrate the library usage.
 ///
 /// [`Iden`]: crate::types::Iden
-#[derive(Debug)]
+#[derive(Debug,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Glyph {
     Table,
     Id,
@@ -91,6 +91,7 @@ pub enum Glyph {
     Aspect,
 }
 
+#[typetag::serde]
 impl Iden for Glyph {
     fn unquoted(&self, s: &mut dyn FmtWrite) {
         write!(

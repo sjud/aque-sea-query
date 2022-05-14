@@ -7,14 +7,14 @@ use crate::{ColumnRef, IntoColumnRef};
 /// * SQLite
 ///     - SQLite version >= 3.35.0
 ///     - **Note that sea-query won't try to enforce either of these constraints**
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum ReturningClause {
     All,
     Columns(Vec<ColumnRef>),
 }
 
 /// Shorthand for constructing [`ReturningClause`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct Returning;
 
 impl Returning {

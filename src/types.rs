@@ -11,6 +11,7 @@ pub use std::sync::Arc as SeaRc;
 macro_rules! iden_trait {
     ($($bounds:ident),*) => {
         /// Identifier
+        #[typetag::serde(tag = "type")]
         pub trait Iden where $(Self: $bounds),* {
             fn prepare(&self, s: &mut dyn fmt::Write, q: char) {
                 write!(s, "{}{}{}", q, self.quoted(q), q).unwrap();
@@ -37,8 +38,8 @@ macro_rules! iden_trait {
 iden_trait!(Send, Sync);
 #[cfg(not(feature = "thread-safe"))]
 iden_trait!();
-
 pub type DynIden = SeaRc<dyn Iden>;
+
 
 pub trait IntoIden {
     fn into_iden(self) -> DynIden;
@@ -58,7 +59,7 @@ impl fmt::Debug for dyn Iden {
 }
 
 /// Column references
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum ColumnRef {
     Column(DynIden),
     TableColumn(DynIden, DynIden),
@@ -73,7 +74,7 @@ pub trait IntoColumnRef {
 
 /// Table references
 #[allow(clippy::large_enum_variant)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum TableRef {
     /// Table identifier without any schema / database prefix
     Table(DynIden),
@@ -96,13 +97,13 @@ pub trait IntoTableRef {
 }
 
 /// Unary operator
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum UnOper {
     Not,
 }
 
 /// Binary operator
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum BinOper {
     And,
     Or,
@@ -136,14 +137,14 @@ pub enum BinOper {
 }
 
 /// Logical chain operator
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum LogicalChainOper {
     And(SimpleExpr),
     Or(SimpleExpr),
 }
 
 /// Join types
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum JoinType {
     Join,
     InnerJoin,
@@ -152,14 +153,14 @@ pub enum JoinType {
 }
 
 /// Nulls order
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum NullOrdering {
     First,
     Last,
 }
 
 /// Order expression
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct OrderExpr {
     pub(crate) expr: SimpleExpr,
     pub(crate) order: Order,
@@ -167,14 +168,14 @@ pub struct OrderExpr {
 }
 
 /// Join on types
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum JoinOn {
     Condition(Box<ConditionHolder>),
     Columns(Vec<SimpleExpr>),
 }
 
 /// Ordering options
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Order {
     Asc,
     Desc,
@@ -182,15 +183,15 @@ pub enum Order {
 }
 
 /// Helper for create name alias
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct Alias(String);
 
 /// Null Alias
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct NullAlias;
 
 /// Common SQL Keywords
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Keyword {
     Null,
     Custom(DynIden),
@@ -352,7 +353,7 @@ impl Alias {
         Self(n.to_owned())
     }
 }
-
+#[typetag::serde]
 impl Iden for Alias {
     fn unquoted(&self, s: &mut dyn fmt::Write) {
         write!(s, "{}", self.0).unwrap();
@@ -370,7 +371,7 @@ impl Default for NullAlias {
         Self
     }
 }
-
+#[typetag::serde]
 impl Iden for NullAlias {
     fn unquoted(&self, _s: &mut dyn fmt::Write) {}
 }

@@ -105,6 +105,7 @@ impl TypeCreateStatement {
     /// ```
     /// use sea_query::{extension::postgres::Type, *};
     ///
+    /// #[derive(serde_derive::Serialize,serde_derive::Deserialize)]
     /// enum FontFamily {
     ///     Type,
     ///     Serif,
@@ -112,6 +113,7 @@ impl TypeCreateStatement {
     ///     Monospace,
     /// }
     ///
+    /// #[typetag::serde]
     /// impl Iden for FontFamily {
     ///     fn unquoted(&self, s: &mut dyn std::fmt::Write) {
     ///         write!(
@@ -211,8 +213,10 @@ impl TypeDropStatement {
     /// ```
     /// use sea_query::{extension::postgres::Type, *};
     ///
+    /// #[derive(serde_derive::Serialize,serde_derive::Deserialize)]
     /// struct FontFamily;
     ///
+    /// #[typetag::serde]
     /// impl Iden for FontFamily {
     ///     fn unquoted(&self, s: &mut dyn std::fmt::Write) {
     ///         write!(s, "{}", "font_family").unwrap();
@@ -315,7 +319,7 @@ impl TypeAlterStatement {
     ///
     /// ```
     /// use sea_query::{extension::postgres::Type, *};
-    ///
+    ///#[derive(serde_derive::Serialize,serde_derive::Deserialize)]
     /// enum FontFamily {
     ///     Type,
     ///     Serif,
@@ -323,6 +327,7 @@ impl TypeAlterStatement {
     ///     Monospace,
     /// }
     ///
+    /// #[typetag::serde]
     /// impl Iden for FontFamily {
     ///     fn unquoted(&self, s: &mut dyn std::fmt::Write) {
     ///         write!(

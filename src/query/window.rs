@@ -37,7 +37,7 @@ pub trait OverStatement {
 }
 
 /// frame_start or frame_end clause
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Frame {
     UnboundedPreceding,
     Preceding(u32),
@@ -47,14 +47,14 @@ pub enum Frame {
 }
 
 /// Frame type
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum FrameType {
     Range,
     Rows,
 }
 
 /// Frame clause
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct FrameClause {
     pub(crate) r#type: FrameType,
     pub(crate) start: Frame,
@@ -68,7 +68,7 @@ pub struct FrameClause {
 /// 1. <https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html>
 /// 2. <https://www.sqlite.org/windowfunctions.html>
 /// 3. <https://www.postgresql.org/docs/current/tutorial-window.html>
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct WindowStatement {
     pub(crate) partition_by: Vec<SimpleExpr>,
     pub(crate) order_by: Vec<OrderExpr>,

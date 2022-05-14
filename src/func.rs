@@ -6,7 +6,7 @@ use crate::{expr::*, types::*, Value};
 pub use crate::extension::postgres::{PgFunc, PgFunction};
 
 /// Functions
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Function {
     Max,
     Min,
@@ -36,8 +36,9 @@ impl Func {
     /// ```
     /// use sea_query::{tests_cfg::*, *};
     ///
+    /// #[derive(serde_derive::Serialize,serde_derive::Deserialize)]
     /// struct MyFunction;
-    ///
+    ///#[typetag::serde]
     /// impl Iden for MyFunction {
     ///     fn unquoted(&self, s: &mut dyn FmtWrite) {
     ///         write!(s, "MY_FUNCTION").unwrap();

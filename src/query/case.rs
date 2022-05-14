@@ -1,12 +1,12 @@
 use crate::{Condition, Expr, IntoCondition, SimpleExpr};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub(crate) struct CaseStatementCondition {
     pub(crate) condition: Condition,
     pub(crate) result: Expr,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct CaseStatement {
     pub(crate) when: Vec<CaseStatementCondition>,
     pub(crate) r#else: Option<Expr>,

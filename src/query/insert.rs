@@ -8,7 +8,7 @@ use crate::{
 ///
 /// [`InsertValueSource`] is a node in the expression tree and can represent a raw value set
 /// ('VALUES') or a select query.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub(crate) enum InsertValueSource {
     Values(Vec<Vec<SimpleExpr>>),
     Select(Box<SelectStatement>),
@@ -41,7 +41,7 @@ pub(crate) enum InsertValueSource {
 ///     r#"INSERT INTO "glyph" ("aspect", "image") VALUES (5.15, '12A'), (4.21, '123')"#
 /// );
 /// ```
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct InsertStatement {
     pub(crate) replace: bool,
     pub(crate) table: Option<Box<TableRef>>,

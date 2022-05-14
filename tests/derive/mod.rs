@@ -2,7 +2,7 @@ use sea_query::*;
 
 #[test]
 fn derive_1() {
-    #[derive(Debug, Iden)]
+    #[derive(Debug, Iden,serde_derive::Serialize,serde_derive::Deserialize)]
     enum User {
         Table,
         Id,
@@ -21,7 +21,7 @@ fn derive_1() {
 
 #[test]
 fn derive_2() {
-    #[derive(Debug, Iden)]
+    #[derive(Debug, Iden,serde_derive::Serialize,serde_derive::Deserialize)]
     // Outer iden attributes overrides what's used for "Table"...
     #[iden = "user"]
     enum Custom {
@@ -47,7 +47,7 @@ fn derive_2() {
 
 #[test]
 fn derive_3() {
-    #[derive(Debug, Iden)]
+    #[derive(Debug, Iden,serde_derive::Serialize,serde_derive::Deserialize)]
     enum Something {
         // ...the Table can also be overwritten like this
         #[iden = "something_else"]
@@ -66,10 +66,10 @@ fn derive_3() {
 
 #[test]
 fn derive_4() {
-    #[derive(Debug, Iden)]
+    #[derive(Debug, Iden,serde_derive::Serialize,serde_derive::Deserialize)]
     pub struct SomeType;
 
-    #[derive(Debug, Iden)]
+    #[derive(Debug, Iden,serde_derive::Serialize,serde_derive::Deserialize)]
     #[iden = "another_name"]
     pub struct CustomName;
 

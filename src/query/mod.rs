@@ -39,7 +39,7 @@ pub use with::*;
 pub struct Query;
 
 /// All available types of table query
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum QueryStatement {
     Select(SelectStatement),
     Insert(InsertStatement),
@@ -47,7 +47,7 @@ pub enum QueryStatement {
     Delete(DeleteStatement),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum SubQueryStatement {
     SelectStatement(SelectStatement),
     InsertStatement(InsertStatement),

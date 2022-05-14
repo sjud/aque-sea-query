@@ -8,7 +8,7 @@ use crate::{
     QueryStatementBuilder, QueryStatementWriter, SubQueryStatement, WindowStatement, WithClause,
     WithQuery,
 };
-
+use serde_derive::{Serialize,Deserialize};
 /// Select rows from an existing table
 ///
 /// # Examples
@@ -38,7 +38,7 @@ use crate::{
 ///     r#"SELECT "character", "font"."name" FROM "character" LEFT JOIN "font" ON "character"."font_id" = "font"."id" WHERE "size_w" IN (3, 4) AND "character" LIKE 'A%'"#
 /// );
 /// ```
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Serialize,Deserialize)]
 pub struct SelectStatement {
     pub(crate) distinct: Option<SelectDistinct>,
     pub(crate) selects: Vec<SelectExpr>,
@@ -56,7 +56,7 @@ pub struct SelectStatement {
 }
 
 /// List of distinct keywords that can be used in select statement
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Serialize,Deserialize)]
 pub enum SelectDistinct {
     All,
     Distinct,
@@ -65,7 +65,7 @@ pub enum SelectDistinct {
 }
 
 /// Window type in [`SelectExpr`]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum WindowSelectType {
     /// Name in [`SelectStatement`]
     Name(DynIden),
@@ -74,7 +74,7 @@ pub enum WindowSelectType {
 }
 
 /// Select expression used in select statement
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Serialize,Deserialize)]
 pub struct SelectExpr {
     pub expr: SimpleExpr,
     pub alias: Option<DynIden>,
@@ -82,7 +82,7 @@ pub struct SelectExpr {
 }
 
 /// Join expression used in select statement
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Serialize,Deserialize)]
 pub struct JoinExpr {
     pub join: JoinType,
     pub table: Box<TableRef>,
@@ -91,7 +91,7 @@ pub struct JoinExpr {
 }
 
 /// List of lock types that can be used in select statement
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum LockType {
     /// Exclusive lock
     Update,
@@ -102,13 +102,13 @@ pub enum LockType {
 }
 
 /// List of lock behavior can be used in select statement
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum LockBehavior {
     Nowait,
     SkipLocked,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Serialize,Deserialize)]
 pub struct LockClause {
     pub(crate) r#type: LockType,
     pub(crate) tables: Vec<TableRef>,
@@ -116,7 +116,7 @@ pub struct LockClause {
 }
 
 /// List of union types that can be used in union clause
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,Serialize,Deserialize)]
 pub enum UnionType {
     Distinct,
     All,

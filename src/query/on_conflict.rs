@@ -1,20 +1,20 @@
 use crate::{DynIden, Expr, IntoIden, SimpleExpr, Value};
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct OnConflict {
     pub(crate) target: Option<OnConflictTarget>,
     pub(crate) action: Option<OnConflictAction>,
 }
 
 /// Represents ON CONFLICT (upsert) targets
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum OnConflictTarget {
     /// A list of columns with unique constraint
     ConflictColumns(Vec<DynIden>),
 }
 
 /// Represents ON CONFLICT (upsert) actions
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum OnConflictAction {
     /// Do nothing
     DoNothing,

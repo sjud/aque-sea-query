@@ -46,6 +46,7 @@ pub fn derive_iden(input: TokenStream) -> TokenStream {
                 ..
             }) => {
                 return quote! {
+                    #[typetag::serde]
                     impl sea_query::Iden for #ident {
                         fn unquoted(&self, s: &mut dyn sea_query::Write) {
                             write!(s, #table_name).unwrap();
@@ -75,6 +76,7 @@ pub fn derive_iden(input: TokenStream) -> TokenStream {
     };
 
     let output = quote! {
+        #[typetag::serde]
         impl sea_query::Iden for #ident {
             fn unquoted(&self, s: &mut dyn sea_query::Write) {
                 match self {

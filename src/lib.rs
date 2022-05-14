@@ -1,5 +1,4 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#![deny(missing_debug_implementations)]
 
 //! <div align="center">
 //!
@@ -157,6 +156,7 @@
 //! use sea_query::*;
 //!
 //! // For example Character table with column id, character, font_size...
+//! #[derive(serde_derive::Serialize,serde_derive::Deserialize)]
 //! pub enum Character {
 //!     Table,
 //!     Id,
@@ -165,6 +165,7 @@
 //! }
 //!
 //! // Mapping between Enum variant and its corresponding string value
+//! #[typetag::serde]
 //! impl Iden for Character {
 //!     fn unquoted(&self, s: &mut dyn std::fmt::Write) {
 //!         write!(
@@ -193,14 +194,14 @@
 //! use sea_query::Iden;
 //!
 //! // This will implement Iden exactly as shown above
-//! #[derive(Iden)]
+//! #[derive(Iden,serde_derive::Serialize,serde_derive::Deserialize)]
 //! enum Character {
 //!     Table,
 //! }
 //! assert_eq!(Character::Table.to_string(), "character");
 //!
 //! // You can also derive a unit struct
-//! #[derive(Iden)]
+//! #[derive(Iden,serde_derive::Serialize,serde_derive::Deserialize)]
 //! struct Glyph;
 //! assert_eq!(Glyph.to_string(), "glyph");
 //! ```

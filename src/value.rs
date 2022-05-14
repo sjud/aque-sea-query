@@ -35,7 +35,7 @@ use crate::ColumnType;
 /// Value variants
 ///
 /// We want Value to be exactly 1 pointer sized, so anything larger should be boxed.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum Value {
     Bool(Option<bool>),
     TinyInt(Option<i8>),
@@ -138,7 +138,7 @@ pub trait ValueType: Sized {
     fn column_type() -> ColumnType;
 }
 
-#[derive(Debug)]
+#[derive(Debug,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct ValueTypeErr;
 
 impl std::error::Error for ValueTypeErr {}
@@ -149,10 +149,10 @@ impl std::fmt::Display for ValueTypeErr {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct Values(pub Vec<Value>);
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum ValueTuple {
     One(Value),
     Two(Value, Value),

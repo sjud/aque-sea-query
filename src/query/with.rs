@@ -54,7 +54,7 @@ use std::ops::Deref;
 ///     DELETE FROM table WHERE table.a = cte_name.a)
 ///
 /// It is mandatory to set the [Self::table_name] and the [Self::query].
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct CommonTableExpression {
     pub(crate) table_name: Option<DynIden>,
     pub(crate) cols: Vec<DynIden>,
@@ -198,7 +198,7 @@ impl CommonTableExpression {
 
 /// For recursive [WithQuery] [WithClause]s the traversing order can be specified in some databases
 /// that support this functionality.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,serde_derive::Serialize,serde_derive::Deserialize)]
 pub enum SearchOrder {
     /// Breadth first traversal during the execution of the recursive query.
     BREADTH,
@@ -216,7 +216,7 @@ pub enum SearchOrder {
 ///
 /// Setting [Self::order] and [Self::expr] is mandatory. The [SelectExpr] used must specify an alias
 /// which will be the name that you can use to order the result of the [CommonTableExpression].
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct Search {
     pub(crate) order: Option<SearchOrder>,
     pub(crate) expr: Option<SelectExpr>,
@@ -274,7 +274,7 @@ impl Search {
 /// A query can have both SEARCH and CYCLE clauses.
 ///
 /// Setting [Self::set], [Self::expr] and [Self::using] is mandatory.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct Cycle {
     pub(crate) expr: Option<SimpleExpr>,
     pub(crate) set_as: Option<DynIden>,
@@ -438,7 +438,7 @@ impl Cycle {
 ///     r#"WITH RECURSIVE "cte_traversal" ("id", "depth", "next", "value") AS (SELECT "id", 1, "next", "value" FROM "table" UNION ALL SELECT "id", "depth" + 1, "next", "value" FROM "table" INNER JOIN "cte_traversal" ON "cte_traversal"."next" = "table"."id") SELECT * FROM "cte_traversal""#
 /// );
 /// ```
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct WithClause {
     pub(crate) recursive: bool,
     pub(crate) search: Option<Search>,
@@ -538,7 +538,7 @@ impl WithClause {
 ///     DELETE FROM table WHERE table.a = cte_name.a)
 ///
 /// It is mandatory to set the [Self::cte] and the [Self::query].
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default,serde_derive::Serialize,serde_derive::Deserialize)]
 pub struct WithQuery {
     pub(crate) with_clause: WithClause,
     pub(crate) query: Option<Box<SubQueryStatement>>,
