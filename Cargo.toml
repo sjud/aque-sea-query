@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    ".",
+    "",
     "sea-query-derive",
     "sea-query-driver",
     "examples/postgres",
